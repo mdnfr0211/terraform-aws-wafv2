@@ -450,7 +450,7 @@ resource "aws_wafv2_web_acl" "main" {
           evaluation_window_sec = rule.value.evaluation_window_sec
           limit                 = rule.value.limit
           dynamic "custom_key" {
-            for_each = length(lookup(rule.value, "custom_key", {})) > 0 ? [lookup(rule.value, "custom_key")] : []
+            for_each = length(lookup(rule.value, "custom_key", {})) > 0 ? [rule.value.custom_key] : []
             content {
               dynamic "header" {
                 for_each = length(lookup(custom_key.value, "header", {})) > 0 ? [lookup(custom_key.value, "header")] : []
@@ -461,6 +461,31 @@ resource "aws_wafv2_web_acl" "main" {
                     type     = "NONE"
                   }
                 }
+              }
+
+              dynamic "http_method" {
+                for_each = length(lookup(custom_key.value, "http_method", {})) > 0 ? [lookup(custom_key.value, "http_method")] : []
+                content {}
+              }
+
+              dynamic "uri_path" {
+                for_each = length(lookup(custom_key.value, "uri_path", {})) > 0 ? [lookup(custom_key.value, "uri_path")] : []
+                content {
+                  text_transformation {
+                    priority = 0
+                    type     = "NONE"
+                  }
+                }
+              }
+            }
+          }
+
+          dynamic "custom_key" {
+            for_each = contains(keys(rule.value.custom_key), "ip") ? [rule.value.custom_key] : []
+            content {
+              dynamic "ip" {
+                for_each = contains(keys(custom_key.value), "ip") ? [custom_key.value.ip] : []
+                content {}
               }
             }
           }
