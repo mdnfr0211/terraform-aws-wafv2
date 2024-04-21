@@ -75,7 +75,7 @@ resource "aws_wafv2_web_acl" "main" {
       }
 
       dynamic "visibility_config" {
-        for_each = length(lookup(rule.value, "visibility_config", {})) == 0 ? [] : [lookup(rule.value, "visibility_config", {})]
+        for_each = length(lookup(rule.value, "visibility_config", {})) > 0 ? [rule.value.visibility_config] : []
         content {
           cloudwatch_metrics_enabled = lookup(visibility_config.value, "cloudwatch_metrics_enabled", true)
           metric_name                = lookup(visibility_config.value, "metric_name", "default-aws-rule-metric")
@@ -124,7 +124,7 @@ resource "aws_wafv2_web_acl" "main" {
         }
       }
       dynamic "visibility_config" {
-        for_each = length(lookup(rule.value, "visibility_config", {})) == 0 ? [] : [lookup(rule.value, "visibility_config", {})]
+        for_each = length(lookup(rule.value, "visibility_config", {})) > 0 ? [rule.value.visibility_config] : []
         content {
           cloudwatch_metrics_enabled = lookup(visibility_config.value, "cloudwatch_metrics_enabled", true)
           metric_name                = lookup(visibility_config.value, "metric_name", "ip-set-rule-metric")
@@ -202,7 +202,7 @@ resource "aws_wafv2_web_acl" "main" {
         }
       }
       dynamic "visibility_config" {
-        for_each = length(lookup(rule.value, "visibility_config", {})) == 0 ? [] : [lookup(rule.value, "visibility_config", {})]
+        for_each = length(lookup(rule.value, "visibility_config", {})) > 0 ? [rule.value.visibility_config] : []
         content {
           cloudwatch_metrics_enabled = lookup(visibility_config.value, "cloudwatch_metrics_enabled", true)
           metric_name                = lookup(visibility_config.value, "metric_name", "default-rule-metric")
@@ -276,7 +276,7 @@ resource "aws_wafv2_web_acl" "main" {
         }
       }
       dynamic "visibility_config" {
-        for_each = length(lookup(rule.value, "visibility_config", {})) == 0 ? [] : [lookup(rule.value, "visibility_config", {})]
+        for_each = length(lookup(rule.value, "visibility_config", {})) > 0 ? [rule.value.visibility_config] : []
         content {
           cloudwatch_metrics_enabled = lookup(visibility_config.value, "cloudwatch_metrics_enabled", true)
           metric_name                = lookup(visibility_config.value, "metric_name", "default-rule-metric")
@@ -350,7 +350,7 @@ resource "aws_wafv2_web_acl" "main" {
         }
       }
       dynamic "visibility_config" {
-        for_each = length(lookup(rule.value, "visibility_config", {})) == 0 ? [] : [lookup(rule.value, "visibility_config", {})]
+        for_each = length(lookup(rule.value, "visibility_config", {})) > 0 ? [rule.value.visibility_config] : []
         content {
           cloudwatch_metrics_enabled = lookup(visibility_config.value, "cloudwatch_metrics_enabled", true)
           metric_name                = lookup(visibility_config.value, "metric_name", "default-rule-metric")
@@ -406,7 +406,7 @@ resource "aws_wafv2_web_acl" "main" {
         }
       }
       dynamic "visibility_config" {
-        for_each = length(lookup(rule.value, "visibility_config", {})) == 0 ? [] : [lookup(rule.value, "visibility_config", {})]
+        for_each = length(lookup(rule.value, "visibility_config", {})) > 0 ? [rule.value.visibility_config] : []
         content {
           cloudwatch_metrics_enabled = lookup(visibility_config.value, "cloudwatch_metrics_enabled", true)
           metric_name                = lookup(visibility_config.value, "metric_name", "default-rule-metric")
@@ -453,7 +453,7 @@ resource "aws_wafv2_web_acl" "main" {
             for_each = length(lookup(rule.value, "custom_key", {})) > 0 ? [rule.value.custom_key] : []
             content {
               dynamic "header" {
-                for_each = length(lookup(custom_key.value, "header", {})) > 0 ? [lookup(custom_key.value, "header")] : []
+                for_each = length(lookup(custom_key.value, "header", {})) > 0 ? [custom_key.value.header] : []
                 content {
                   name = header.value.name
                   text_transformation {
@@ -464,12 +464,12 @@ resource "aws_wafv2_web_acl" "main" {
               }
 
               dynamic "http_method" {
-                for_each = length(lookup(custom_key.value, "http_method", {})) > 0 ? [lookup(custom_key.value, "http_method")] : []
+                for_each = length(lookup(custom_key.value, "http_method", {})) > 0 ? [custom_key.value.http_method] : []
                 content {}
               }
 
               dynamic "uri_path" {
-                for_each = length(lookup(custom_key.value, "uri_path", {})) > 0 ? [lookup(custom_key.value, "uri_path")] : []
+                for_each = length(lookup(custom_key.value, "uri_path", {})) > 0 ? [custom_key.value.uri_path] : []
                 content {
                   text_transformation {
                     priority = 0
@@ -491,7 +491,7 @@ resource "aws_wafv2_web_acl" "main" {
           }
 
           dynamic "forwarded_ip_config" {
-            for_each = length(lookup(rule.value, "forwarded_ip_config", {})) > 0 ? [lookup(rule.value, "forwarded_ip_config")] : []
+            for_each = length(lookup(rule.value, "forwarded_ip_config", {})) > 0 ? [rule.value.forwarded_ip_config] : []
             content {
               fallback_behavior = forwarded_ip_config.value.fallback_behavior
               header_name       = forwarded_ip_config.valu.header_name
@@ -499,35 +499,35 @@ resource "aws_wafv2_web_acl" "main" {
           }
 
           dynamic "scope_down_statement" {
-            for_each = length(lookup(rule.value, "scope_down_statement", {})) == 0 ? [] : [lookup(rule.value, "scope_down_statement", {})]
+            for_each = length(lookup(rule.value, "scope_down_statement", {})) > 0 ? [rule.value.scope_down_statement] : []
             content {
               dynamic "byte_match_statement" {
-                for_each = length(lookup(scope_down_statement.value, "byte_match_statement", {})) == 0 ? [] : [lookup(scope_down_statement.value, "byte_match_statement", {})]
+                for_each = length(lookup(scope_down_statement.value, "byte_match_statement", {})) > 0 ? [scope_down_statement.value.byte_match_statement] : []
                 content {
                   dynamic "field_to_match" {
-                    for_each = length(lookup(byte_match_statement.value, "field_to_match", {})) == 0 ? [] : [lookup(byte_match_statement.value, "field_to_match", {})]
+                    for_each = length(lookup(byte_match_statement.value, "field_to_match", {})) > 0 ? [byte_match_statement.value.field_to_match] : []
                     content {
 
                       dynamic "uri_path" {
-                        for_each = length(lookup(field_to_match.value, "uri_path", {})) == 0 ? [] : [lookup(field_to_match.value, "uri_path")]
+                        for_each = contains(keys(field_to_match.value), "uri_path") ? [field_to_match.value.uri_path] : []
                         content {}
                       }
 
                       dynamic "method" {
-                        for_each = length(lookup(field_to_match.value, "method", {})) == 0 ? [] : [lookup(field_to_match.value, "method")]
+                        for_each = contains(keys(field_to_match.value), "method") ? [field_to_match.value.method] : []
                         content {}
                       }
 
                       dynamic "single_header" {
-                        for_each = length(lookup(field_to_match.value, "single_header", {})) == 0 ? [] : [lookup(field_to_match.value, "single_header")]
+                        for_each = length(lookup(field_to_match.value, "single_header", {})) > 0 ? [field_to_match.value.single_header] : []
                         content {
-                          name = lower(lookup(single_header.value, "name"))
+                          name = single_header.value.name
                         }
                       }
                     }
                   }
-                  positional_constraint = lookup(byte_match_statement.value, "positional_constraint")
-                  search_string         = lookup(byte_match_statement.value, "search_string")
+                  positional_constraint = byte_match_statement.value.positional_constraint
+                  search_string         = byte_match_statement.value.search_string
                   text_transformation {
                     priority = 0
                     type     = "NONE"
@@ -536,31 +536,31 @@ resource "aws_wafv2_web_acl" "main" {
               }
 
               dynamic "regex_match_statement" {
-                for_each = length(lookup(scope_down_statement.value, "regex_match_statement", {})) == 0 ? [] : [lookup(scope_down_statement.value, "regex_match_statement", {})]
+                for_each = length(lookup(scope_down_statement.value, "regex_match_statement", {})) > 0 ? [scope_down_statement.value.regex_match_statement] : []
                 content {
                   dynamic "field_to_match" {
-                    for_each = length(lookup(regex_match_statement.value, "field_to_match", {})) == 0 ? [] : [lookup(regex_match_statement.value, "field_to_match", {})]
+                    for_each = length(lookup(regex_match_statement.value, "field_to_match", {})) > 0 ? [regex_match_statement.value.field_to_match] : []
                     content {
 
                       dynamic "uri_path" {
-                        for_each = length(lookup(field_to_match.value, "uri_path", {})) == 0 ? [] : [lookup(field_to_match.value, "uri_path")]
+                        for_each = length(lookup(field_to_match.value, "uri_path", {})) > 0 ? [field_to_match.value.uri_path] : []
                         content {}
                       }
 
                       dynamic "method" {
-                        for_each = length(lookup(field_to_match.value, "method", {})) == 0 ? [] : [lookup(field_to_match.value, "method")]
+                        for_each = length(lookup(field_to_match.value, "method", {})) > 0 ? [field_to_match.value.method] : []
                         content {}
                       }
 
                       dynamic "single_header" {
-                        for_each = length(lookup(field_to_match.value, "single_header", {})) == 0 ? [] : [lookup(field_to_match.value, "single_header")]
+                        for_each = length(lookup(field_to_match.value, "single_header", {})) > 0 ? [field_to_match.value.single_header] : []
                         content {
-                          name = lower(lookup(single_header.value, "name"))
+                          name = single_header.value.name
                         }
                       }
                     }
                   }
-                  regex_string = lookup(regex_match_statement.value, "regex_string")
+                  regex_string = regex_match_statement.value.regex_string
                   text_transformation {
                     priority = 0
                     type     = "NONE"
@@ -569,16 +569,16 @@ resource "aws_wafv2_web_acl" "main" {
               }
 
               dynamic "geo_match_statement" {
-                for_each = length(lookup(scope_down_statement.value, "geo_match_statement", {})) == 0 ? [] : [lookup(scope_down_statement.value, "geo_match_statement", {})]
+                for_each = length(lookup(scope_down_statement.value, "geo_match_statement", {})) > 0 ? [scope_down_statement.value.geo_match_statement] : []
                 content {
-                  country_codes = lookup(geo_match_statement.value, "country_codes")
+                  country_codes = geo_match_statement.value.country_codes
                 }
               }
 
               dynamic "ip_set_reference_statement" {
-                for_each = length(lookup(scope_down_statement.value, "ip_set_reference_statement", {})) == 0 ? [] : [lookup(scope_down_statement.value, "ip_set_reference_statement", {})]
+                for_each = length(lookup(scope_down_statement.value, "ip_set_reference_statement", {})) > 0 ? [scope_down_statement.value.ip_set_reference_statement] : []
                 content {
-                  arn = lookup(ip_set_reference_statement.value, "arn")
+                  arn = ip_set_reference_statement.value.arn
                 }
               }
             }
@@ -587,7 +587,7 @@ resource "aws_wafv2_web_acl" "main" {
       }
 
       dynamic "visibility_config" {
-        for_each = length(lookup(rule.value, "visibility_config", {})) == 0 ? [] : [lookup(rule.value, "visibility_config", {})]
+        for_each = length(lookup(rule.value, "visibility_config", {})) > 0 ? [rule.value.visibility_config] : []
         content {
           cloudwatch_metrics_enabled = lookup(visibility_config.value, "cloudwatch_metrics_enabled", true)
           metric_name                = lookup(visibility_config.value, "metric_name", "default-rule-metric")
