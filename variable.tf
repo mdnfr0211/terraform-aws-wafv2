@@ -48,19 +48,19 @@ variable "ip_set_match_rules" {
 
 variable "single_header_rules" {
   description = "List of single header match rules to associate with the Web ACL."
-  type        = list(any)
+  type        = any
   default     = []
 }
 
 variable "http_method_rules" {
   description = "List of HTTP method match rules to associate with the Web ACL."
-  type        = list(any)
+  type        = any
   default     = []
 }
 
 variable "uri_path_rules" {
   description = "List of URI path match rules to associate with the Web ACL."
-  type        = list(any)
+  type        = any
   default     = []
 }
 
@@ -92,4 +92,16 @@ variable "not_statement_rules" {
   description = "List of WAF rule statements that are combined with a logical NOT."
   type        = list(any)
   default     = []
+}
+
+variable "and_not_statement_rules" {
+  description = "List of WAF rule statements that are combined with a logical AND and NOT."
+  type = list(any)
+  default = []
+}
+
+variable "or_not_statement_rules" {
+  description = "List of WAF rule statements that are combined with a logical OR and NOT."
+  type = list(any)
+  default = []
 }
