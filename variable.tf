@@ -75,3 +75,9 @@ variable "rate_limit_rules" {
   type        = list(any)
   default     = []
 }
+
+variable "and_statement_rules" {
+  description = "value"
+  type        = list(any)
+  default     = []
+}
