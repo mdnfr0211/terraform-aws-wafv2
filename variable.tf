@@ -87,3 +87,9 @@ variable "or_statement_rules" {
   type        = list(any)
   default     = []
 }
+
+variable "not_statement_rules" {
+  description = "List of WAF rule statements that are combined with a logical NOT."
+  type        = list(any)
+  default     = []
+}
