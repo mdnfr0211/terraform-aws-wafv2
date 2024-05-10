@@ -24,6 +24,10 @@ No modules.
 |------|------|
 | [aws_wafv2_web_acl.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl) | resource |
 
+## Examples
+
+- [Complete WAF](https://github.com/mdnfr0211/terraform-aws-wafv2/tree/main/examples/complete)
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
