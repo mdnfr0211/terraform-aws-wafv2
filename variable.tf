@@ -36,13 +36,13 @@ variable "override_action" {
 
 variable "aws_managed_rules" {
   description = "List of AWS Managed Rules to associate with the Web ACL."
-  type        = list(any)
+  type        = any
   default     = []
 }
 
 variable "ip_set_match_rules" {
   description = "List of IP set match rules to associate with the Web ACL."
-  type        = list(any)
+  type        = any
   default     = []
 }
 
@@ -66,31 +66,31 @@ variable "uri_path_rules" {
 
 variable "geo_match_rules" {
   description = "List of Geo match rules to associate with the Web ACL."
-  type        = list(any)
+  type        = any
   default     = []
 }
 
 variable "rate_limit_rules" {
   description = "List of Rate Limit rules to associate with the Web ACL."
-  type        = list(any)
+  type        = any
   default     = []
 }
 
 variable "and_statement_rules" {
   description = "List of WAF rule statements that are combined with a logical AND."
-  type        = list(any)
+  type        = any
   default     = []
 }
 
 variable "or_statement_rules" {
   description = "List of WAF rule statements that are combined with a logical OR."
-  type        = list(any)
+  type        = any
   default     = []
 }
 
 variable "not_statement_rules" {
   description = "List of WAF rule statements that are combined with a logical NOT."
-  type        = list(any)
+  type        = any
   default     = []
 }
 
