@@ -1184,6 +1184,188 @@ resource "aws_wafv2_web_acl" "main" {
                         arn = ip_set_reference_statement.value.arn
                       }
                     }
+
+                    dynamic "or_statement" {
+                      for_each = length(lookup(not_statement.value, "or_statement", {})) > 0 ? [not_statement.value.or_statement] : []
+                      content {
+                        dynamic "statement" {
+                          for_each = or_statement.value.statements
+                          content {
+                            dynamic "byte_match_statement" {
+                              for_each = length(lookup(statement.value, "byte_match_statement", {})) > 0 ? [statement.value.byte_match_statement] : []
+                              content {
+                                dynamic "field_to_match" {
+                                  for_each = length(lookup(byte_match_statement.value, "field_to_match", {})) > 0 ? [byte_match_statement.value.field_to_match] : []
+                                  content {
+
+                                    dynamic "uri_path" {
+                                      for_each = contains(keys(field_to_match.value), "uri_path") ? [field_to_match.value.uri_path] : []
+                                      content {}
+                                    }
+
+                                    dynamic "method" {
+                                      for_each = contains(keys(field_to_match.value), "method") ? [field_to_match.value.method] : []
+                                      content {}
+                                    }
+
+                                    dynamic "single_header" {
+                                      for_each = length(lookup(field_to_match.value, "single_header", {})) > 0 ? [field_to_match.value.single_header] : []
+                                      content {
+                                        name = single_header.value.name
+                                      }
+                                    }
+                                  }
+                                }
+                                positional_constraint = byte_match_statement.value.positional_constraint
+                                search_string         = byte_match_statement.value.search_string
+                                text_transformation {
+                                  priority = 0
+                                  type     = "NONE"
+                                }
+                              }
+                            }
+
+                            dynamic "regex_match_statement" {
+                              for_each = length(lookup(statement.value, "regex_match_statement", {})) > 0 ? [statement.value.regex_match_statement] : []
+                              content {
+                                dynamic "field_to_match" {
+                                  for_each = length(lookup(regex_match_statement.value, "field_to_match", {})) > 0 ? [regex_match_statement.value.field_to_match] : []
+                                  content {
+
+                                    dynamic "uri_path" {
+                                      for_each = length(lookup(field_to_match.value, "uri_path", {})) > 0 ? [field_to_match.value.uri_path] : []
+                                      content {}
+                                    }
+
+                                    dynamic "method" {
+                                      for_each = length(lookup(field_to_match.value, "method", {})) > 0 ? [field_to_match.value.method] : []
+                                      content {}
+                                    }
+
+                                    dynamic "single_header" {
+                                      for_each = length(lookup(field_to_match.value, "single_header", {})) > 0 ? [field_to_match.value.single_header] : []
+                                      content {
+                                        name = single_header.value.name
+                                      }
+                                    }
+                                  }
+                                }
+                                regex_string = regex_match_statement.value.regex_string
+                                text_transformation {
+                                  priority = 0
+                                  type     = "NONE"
+                                }
+                              }
+                            }
+
+                            dynamic "geo_match_statement" {
+                              for_each = length(lookup(statement.value, "geo_match_statement", {})) > 0 ? [statement.value.geo_match_statement] : []
+                              content {
+                                country_codes = geo_match_statement.value.country_codes
+                              }
+                            }
+
+                            dynamic "ip_set_reference_statement" {
+                              for_each = length(lookup(statement.value, "ip_set_reference_statement", {})) > 0 ? [statement.value.ip_set_reference_statement] : []
+                              content {
+                                arn = ip_set_reference_statement.value.arn
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+
+                    dynamic "and_statement" {
+                      for_each = length(lookup(not_statement.value, "and_statement", {})) > 0 ? [not_statement.value.and_statement] : []
+                      content {
+                        dynamic "statement" {
+                          for_each = and_statement.value.statements
+                          content {
+                            dynamic "byte_match_statement" {
+                              for_each = length(lookup(statement.value, "byte_match_statement", {})) > 0 ? [statement.value.byte_match_statement] : []
+                              content {
+                                dynamic "field_to_match" {
+                                  for_each = length(lookup(byte_match_statement.value, "field_to_match", {})) > 0 ? [byte_match_statement.value.field_to_match] : []
+                                  content {
+
+                                    dynamic "uri_path" {
+                                      for_each = contains(keys(field_to_match.value), "uri_path") ? [field_to_match.value.uri_path] : []
+                                      content {}
+                                    }
+
+                                    dynamic "method" {
+                                      for_each = contains(keys(field_to_match.value), "method") ? [field_to_match.value.method] : []
+                                      content {}
+                                    }
+
+                                    dynamic "single_header" {
+                                      for_each = length(lookup(field_to_match.value, "single_header", {})) > 0 ? [field_to_match.value.single_header] : []
+                                      content {
+                                        name = single_header.value.name
+                                      }
+                                    }
+                                  }
+                                }
+                                positional_constraint = byte_match_statement.value.positional_constraint
+                                search_string         = byte_match_statement.value.search_string
+                                text_transformation {
+                                  priority = 0
+                                  type     = "NONE"
+                                }
+                              }
+                            }
+
+                            dynamic "regex_match_statement" {
+                              for_each = length(lookup(statement.value, "regex_match_statement", {})) > 0 ? [statement.value.regex_match_statement] : []
+                              content {
+                                dynamic "field_to_match" {
+                                  for_each = length(lookup(regex_match_statement.value, "field_to_match", {})) > 0 ? [regex_match_statement.value.field_to_match] : []
+                                  content {
+
+                                    dynamic "uri_path" {
+                                      for_each = length(lookup(field_to_match.value, "uri_path", {})) > 0 ? [field_to_match.value.uri_path] : []
+                                      content {}
+                                    }
+
+                                    dynamic "method" {
+                                      for_each = length(lookup(field_to_match.value, "method", {})) > 0 ? [field_to_match.value.method] : []
+                                      content {}
+                                    }
+
+                                    dynamic "single_header" {
+                                      for_each = length(lookup(field_to_match.value, "single_header", {})) > 0 ? [field_to_match.value.single_header] : []
+                                      content {
+                                        name = single_header.value.name
+                                      }
+                                    }
+                                  }
+                                }
+                                regex_string = regex_match_statement.value.regex_string
+                                text_transformation {
+                                  priority = 0
+                                  type     = "NONE"
+                                }
+                              }
+                            }
+
+                            dynamic "geo_match_statement" {
+                              for_each = length(lookup(statement.value, "geo_match_statement", {})) > 0 ? [statement.value.geo_match_statement] : []
+                              content {
+                                country_codes = geo_match_statement.value.country_codes
+                              }
+                            }
+
+                            dynamic "ip_set_reference_statement" {
+                              for_each = length(lookup(statement.value, "ip_set_reference_statement", {})) > 0 ? [statement.value.ip_set_reference_statement] : []
+                              content {
+                                arn = ip_set_reference_statement.value.arn
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -1399,6 +1581,188 @@ resource "aws_wafv2_web_acl" "main" {
                       for_each = length(lookup(not_statement.value, "ip_set_reference_statement", {})) > 0 ? [not_statement.value.ip_set_reference_statement] : []
                       content {
                         arn = ip_set_reference_statement.value.arn
+                      }
+                    }
+
+                    dynamic "or_statement" {
+                      for_each = length(lookup(not_statement.value, "or_statement", {})) > 0 ? [not_statement.value.or_statement] : []
+                      content {
+                        dynamic "statement" {
+                          for_each = or_statement.value.statements
+                          content {
+                            dynamic "byte_match_statement" {
+                              for_each = length(lookup(statement.value, "byte_match_statement", {})) > 0 ? [statement.value.byte_match_statement] : []
+                              content {
+                                dynamic "field_to_match" {
+                                  for_each = length(lookup(byte_match_statement.value, "field_to_match", {})) > 0 ? [byte_match_statement.value.field_to_match] : []
+                                  content {
+
+                                    dynamic "uri_path" {
+                                      for_each = contains(keys(field_to_match.value), "uri_path") ? [field_to_match.value.uri_path] : []
+                                      content {}
+                                    }
+
+                                    dynamic "method" {
+                                      for_each = contains(keys(field_to_match.value), "method") ? [field_to_match.value.method] : []
+                                      content {}
+                                    }
+
+                                    dynamic "single_header" {
+                                      for_each = length(lookup(field_to_match.value, "single_header", {})) > 0 ? [field_to_match.value.single_header] : []
+                                      content {
+                                        name = single_header.value.name
+                                      }
+                                    }
+                                  }
+                                }
+                                positional_constraint = byte_match_statement.value.positional_constraint
+                                search_string         = byte_match_statement.value.search_string
+                                text_transformation {
+                                  priority = 0
+                                  type     = "NONE"
+                                }
+                              }
+                            }
+
+                            dynamic "regex_match_statement" {
+                              for_each = length(lookup(statement.value, "regex_match_statement", {})) > 0 ? [statement.value.regex_match_statement] : []
+                              content {
+                                dynamic "field_to_match" {
+                                  for_each = length(lookup(regex_match_statement.value, "field_to_match", {})) > 0 ? [regex_match_statement.value.field_to_match] : []
+                                  content {
+
+                                    dynamic "uri_path" {
+                                      for_each = length(lookup(field_to_match.value, "uri_path", {})) > 0 ? [field_to_match.value.uri_path] : []
+                                      content {}
+                                    }
+
+                                    dynamic "method" {
+                                      for_each = length(lookup(field_to_match.value, "method", {})) > 0 ? [field_to_match.value.method] : []
+                                      content {}
+                                    }
+
+                                    dynamic "single_header" {
+                                      for_each = length(lookup(field_to_match.value, "single_header", {})) > 0 ? [field_to_match.value.single_header] : []
+                                      content {
+                                        name = single_header.value.name
+                                      }
+                                    }
+                                  }
+                                }
+                                regex_string = regex_match_statement.value.regex_string
+                                text_transformation {
+                                  priority = 0
+                                  type     = "NONE"
+                                }
+                              }
+                            }
+
+                            dynamic "geo_match_statement" {
+                              for_each = length(lookup(statement.value, "geo_match_statement", {})) > 0 ? [statement.value.geo_match_statement] : []
+                              content {
+                                country_codes = geo_match_statement.value.country_codes
+                              }
+                            }
+
+                            dynamic "ip_set_reference_statement" {
+                              for_each = length(lookup(statement.value, "ip_set_reference_statement", {})) > 0 ? [statement.value.ip_set_reference_statement] : []
+                              content {
+                                arn = ip_set_reference_statement.value.arn
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+
+                    dynamic "and_statement" {
+                      for_each = length(lookup(not_statement.value, "and_statement", {})) > 0 ? [not_statement.value.and_statement] : []
+                      content {
+                        dynamic "statement" {
+                          for_each = and_statement.value.statements
+                          content {
+                            dynamic "byte_match_statement" {
+                              for_each = length(lookup(statement.value, "byte_match_statement", {})) > 0 ? [statement.value.byte_match_statement] : []
+                              content {
+                                dynamic "field_to_match" {
+                                  for_each = length(lookup(byte_match_statement.value, "field_to_match", {})) > 0 ? [byte_match_statement.value.field_to_match] : []
+                                  content {
+
+                                    dynamic "uri_path" {
+                                      for_each = contains(keys(field_to_match.value), "uri_path") ? [field_to_match.value.uri_path] : []
+                                      content {}
+                                    }
+
+                                    dynamic "method" {
+                                      for_each = contains(keys(field_to_match.value), "method") ? [field_to_match.value.method] : []
+                                      content {}
+                                    }
+
+                                    dynamic "single_header" {
+                                      for_each = length(lookup(field_to_match.value, "single_header", {})) > 0 ? [field_to_match.value.single_header] : []
+                                      content {
+                                        name = single_header.value.name
+                                      }
+                                    }
+                                  }
+                                }
+                                positional_constraint = byte_match_statement.value.positional_constraint
+                                search_string         = byte_match_statement.value.search_string
+                                text_transformation {
+                                  priority = 0
+                                  type     = "NONE"
+                                }
+                              }
+                            }
+
+                            dynamic "regex_match_statement" {
+                              for_each = length(lookup(statement.value, "regex_match_statement", {})) > 0 ? [statement.value.regex_match_statement] : []
+                              content {
+                                dynamic "field_to_match" {
+                                  for_each = length(lookup(regex_match_statement.value, "field_to_match", {})) > 0 ? [regex_match_statement.value.field_to_match] : []
+                                  content {
+
+                                    dynamic "uri_path" {
+                                      for_each = length(lookup(field_to_match.value, "uri_path", {})) > 0 ? [field_to_match.value.uri_path] : []
+                                      content {}
+                                    }
+
+                                    dynamic "method" {
+                                      for_each = length(lookup(field_to_match.value, "method", {})) > 0 ? [field_to_match.value.method] : []
+                                      content {}
+                                    }
+
+                                    dynamic "single_header" {
+                                      for_each = length(lookup(field_to_match.value, "single_header", {})) > 0 ? [field_to_match.value.single_header] : []
+                                      content {
+                                        name = single_header.value.name
+                                      }
+                                    }
+                                  }
+                                }
+                                regex_string = regex_match_statement.value.regex_string
+                                text_transformation {
+                                  priority = 0
+                                  type     = "NONE"
+                                }
+                              }
+                            }
+
+                            dynamic "geo_match_statement" {
+                              for_each = length(lookup(statement.value, "geo_match_statement", {})) > 0 ? [statement.value.geo_match_statement] : []
+                              content {
+                                country_codes = geo_match_statement.value.country_codes
+                              }
+                            }
+
+                            dynamic "ip_set_reference_statement" {
+                              for_each = length(lookup(statement.value, "ip_set_reference_statement", {})) > 0 ? [statement.value.ip_set_reference_statement] : []
+                              content {
+                                arn = ip_set_reference_statement.value.arn
+                              }
+                            }
+                          }
+                        }
                       }
                     }
                   }

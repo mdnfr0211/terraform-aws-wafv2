@@ -96,12 +96,12 @@ variable "not_statement_rules" {
 
 variable "and_not_statement_rules" {
   description = "List of WAF rule statements that are combined with a logical AND and NOT."
-  type = list(any)
-  default = []
+  type        = any
+  default     = []
 }
 
 variable "or_not_statement_rules" {
   description = "List of WAF rule statements that are combined with a logical OR and NOT."
-  type = list(any)
-  default = []
+  type        = any
+  default     = []
 }

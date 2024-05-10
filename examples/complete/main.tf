@@ -1,5 +1,5 @@
 module "waf" {
-  source = "../terraform-aws-wafv2"
+  source = "../.."
 
   acl_name = "exampleACL"
   scope    = "REGIONAL"
@@ -264,13 +264,97 @@ module "waf" {
         cloudwatch_metrics_enabled = false
         sampled_requests_enabled   = false
       }
+    },
+    {
+      name     = "AndNotStatementRule2"
+      priority = 15
+      action   = "count"
+      statements = [
+        {
+          byte_match_statement = {
+            field_to_match = {
+              method = {}
+            }
+            positional_constraint = "EXACTLY"
+            search_string         = "GET"
+          }
+        },
+        {
+          not_statement = {
+            or_statement = {
+              statements = [
+                {
+                  byte_match_statement = {
+                    field_to_match = {
+                      method = {}
+                    }
+                    positional_constraint = "EXACTLY"
+                    search_string         = "GET"
+                  }
+                },
+                {
+                  geo_match_statement = {
+                    country_codes = ["IN"]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+      visibility_config = {
+        cloudwatch_metrics_enabled = false
+        sampled_requests_enabled   = false
+      }
+    },
+    {
+      name     = "AndNotStatementRule3"
+      priority = 16
+      action   = "count"
+      statements = [
+        {
+          byte_match_statement = {
+            field_to_match = {
+              method = {}
+            }
+            positional_constraint = "EXACTLY"
+            search_string         = "GET"
+          }
+        },
+        {
+          not_statement = {
+            and_statement = {
+              statements = [
+                {
+                  byte_match_statement = {
+                    field_to_match = {
+                      method = {}
+                    }
+                    positional_constraint = "EXACTLY"
+                    search_string         = "GET"
+                  }
+                },
+                {
+                  geo_match_statement = {
+                    country_codes = ["IN"]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+      visibility_config = {
+        cloudwatch_metrics_enabled = false
+        sampled_requests_enabled   = false
+      }
     }
   ]
 
   or_not_statement_rules = [
     {
       name     = "OrNotStatementRule"
-      priority = 15
+      priority = 17
       action   = "count"
       statements = [
         {
@@ -286,6 +370,90 @@ module "waf" {
           not_statement = {
             geo_match_statement = {
               country_codes = ["IN"]
+            }
+          }
+        }
+      ]
+      visibility_config = {
+        cloudwatch_metrics_enabled = false
+        sampled_requests_enabled   = false
+      }
+    },
+    {
+      name     = "OrNotStatementRule2"
+      priority = 18
+      action   = "count"
+      statements = [
+        {
+          byte_match_statement = {
+            field_to_match = {
+              method = {}
+            }
+            positional_constraint = "EXACTLY"
+            search_string         = "GET"
+          }
+        },
+        {
+          not_statement = {
+            or_statement = {
+              statements = [
+                {
+                  byte_match_statement = {
+                    field_to_match = {
+                      method = {}
+                    }
+                    positional_constraint = "EXACTLY"
+                    search_string         = "GET"
+                  }
+                },
+                {
+                  geo_match_statement = {
+                    country_codes = ["IN"]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+      visibility_config = {
+        cloudwatch_metrics_enabled = false
+        sampled_requests_enabled   = false
+      }
+    },
+    {
+      name     = "OrNotStatementRule3"
+      priority = 19
+      action   = "count"
+      statements = [
+        {
+          byte_match_statement = {
+            field_to_match = {
+              method = {}
+            }
+            positional_constraint = "EXACTLY"
+            search_string         = "GET"
+          }
+        },
+        {
+          not_statement = {
+            and_statement = {
+              statements = [
+                {
+                  byte_match_statement = {
+                    field_to_match = {
+                      method = {}
+                    }
+                    positional_constraint = "EXACTLY"
+                    search_string         = "GET"
+                  }
+                },
+                {
+                  geo_match_statement = {
+                    country_codes = ["IN"]
+                  }
+                }
+              ]
             }
           }
         }
