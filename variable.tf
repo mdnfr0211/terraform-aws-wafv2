@@ -1,7 +1,6 @@
 variable "acl_name" {
   description = "The name assigned to the Web ACL."
   type        = string
-  default     = null
 }
 
 variable "description" {
@@ -103,5 +102,65 @@ variable "and_not_statement_rules" {
 variable "or_not_statement_rules" {
   description = "List of WAF rule statements that are combined with a logical OR and NOT."
   type        = any
+  default     = []
+}
+
+variable "enable_cw_logging" {
+  description = "Determines whether CloudWatch logging should be enabled for the WAF web ACL."
+  type        = bool
+  default     = false
+}
+
+variable "retention_in_days" {
+  description = "The number of days to retain the logs in the CloudWatch Log Group."
+  type        = number
+  default     = 365
+}
+
+variable "kms_key_id" {
+  description = "The ID of an existing KMS key to be used for encrypting the CloudWatch Log Group. If not provided, a new KMS key will be created."
+  type        = string
+  default     = null
+}
+
+variable "enable_s3_logging" {
+  description = "Determines whether S3 logging should be enabled for the WAF web ACL."
+  type        = bool
+  default     = false
+}
+
+variable "log_group_name" {
+  description = "The name of an existing CloudWatch Log Group to be used for logging. If not provided, a new CloudWatch Log Group will be created."
+  type        = string
+  default     = null
+}
+
+variable "s3_bucket_name" {
+  description = "The name of an existing S3 bucket to be used for logging. If not provided, a new S3 bucket will be created."
+  type        = string
+  default     = null
+}
+
+variable "create_alb_association" {
+  description = "Determines whether to create an association between the WAF web ACL and Application Load Balancers (ALBs)."
+  type        = bool
+  default     = false
+}
+
+variable "alb_arn_list" {
+  description = "A list of ARNs of the Application Load Balancers (ALBs) to associate with the WAF web ACL."
+  type        = list(string)
+  default     = []
+}
+
+variable "create_apigw_association" {
+  description = "Determines whether to create an association between the WAF web ACL and API Gateways."
+  type        = bool
+  default     = false
+}
+
+variable "apigw_arn_list" {
+  description = "A list of ARNs of the API Gateways to associate with the WAF web ACL."
+  type        = list(string)
   default     = []
 }

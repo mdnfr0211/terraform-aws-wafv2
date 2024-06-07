@@ -1,8 +1,13 @@
 module "waf" {
-  source = "../.."
+  source = "../../"
 
   acl_name = "exampleACL"
   scope    = "REGIONAL"
+
+  create_alb_association = true
+  alb_arn_list           = ["arn:aws:elasticloadbalancing:ap-southeast-1:123456789012:loadbalancer/app/my-alb/1234567890abcdef"]
+
+  enable_cw_logging = true
 
   aws_managed_rules = [
     {
@@ -38,7 +43,7 @@ module "waf" {
     {
       name       = "IPSetRule"
       priority   = 2
-      ip_set_arn = "arn:aws:wafv2:ap-southeast-1:453752871997:regional/ipset/test/493d5385-7487-4e65-81f3-c9427e2c10a9"
+      ip_set_arn = "arn:aws:wafv2:ap-southeast-1:123456789012:regional/ipset/test/493d5385-7487-4e65-81f3-c9427e2c10a9"
       action     = "allow"
       visibility_config = {
         cloudwatch_metrics_enabled = false
