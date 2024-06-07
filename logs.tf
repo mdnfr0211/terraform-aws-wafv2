@@ -45,7 +45,7 @@ data "aws_iam_policy_document" "kms" {
 }
 
 resource "aws_kms_key" "main" {
-  count                   = var.enable_cw_logging ? 1 : 0
+  count                   = var.enable_cw_logging && var.kms_key_id != null ? 1 : 0
   description             = "KMS key for encrypting WAF logs in CloudWatch Log Group"
   deletion_window_in_days = 10
   enable_key_rotation     = true
